@@ -158,8 +158,35 @@ def top_sentences(query, sentences, idfs, n):
     the query, ranked according to idf. If there are ties, preference should
     be given to sentences that have a higher query term density.
     """
-    # TODO: use .sorted() with helper function of keys??
-    raise NotImplementedError
+
+    # Calculate the matching word measure and query term density for each sentence:
+    top_sentences = []
+    # print("len(sentences): ", len(sentences))
+    for sentence in sentences:
+        matching_word_measure = 0
+        query_term_density = 0
+        for word in query:
+            if word in sentence:
+                matching_word_measure += idfs[word]
+                query_term_density += 1
+        top_sentences.append((sentence, matching_word_measure, query_term_density))
+    
+    # Find the top sentences based on matching word measure:
+    top_sentences.sort(key=lambda x:x[1], reverse=True)
+    matching_word_measure_ties = []
+    for i in range(len(top_sentences)):
+        if top_sentences[i][1] == top_sentences[0][1]:
+            matching_word_measure_ties.append(top_sentences[i])
+
+    # Sort matching word measure ties based on query term density:
+    matching_word_measure_ties.sort(key=lambda x:x[2], reverse=True)
+
+    # Return the top 'n':
+    top_sentences = matching_word_measure_ties[:n]
+    for i in range(len(top_sentences)):
+        top_sentences[i] = top_sentences[i][0]
+    return top_sentences
+
 
 
 if __name__ == "__main__":
