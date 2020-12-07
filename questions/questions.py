@@ -73,11 +73,7 @@ def tokenize(document):
     """
 
     # Tokenize the sentence while removing the punctuation and setting all words to lowercase:
-    words = [
-                word.lower() for word in
-                nltk.word_tokenize(document)
-                if word.isalpha()
-            ]
+    words = [word.lower() for word in nltk.word_tokenize(document) if word.isalpha()]
 
     # Remove the English stopwords:
     # source: https://www.geeksforgeeks.org/removing-stop-words-nltk-python/
@@ -85,6 +81,7 @@ def tokenize(document):
     words = [word for word in words if not word in stop_words]
 
     return words
+
 
 def compute_idfs(documents):
     """
@@ -112,6 +109,7 @@ def compute_idfs(documents):
     total_documents = len(documents)
     for key in document_frequencies:
         document_frequencies[key] = math.log(total_documents / document_frequencies[key])
+    
     return document_frequencies
 
 
@@ -122,8 +120,8 @@ def top_files(query, files, idfs, n):
     to their IDF values), return a list of the filenames of the the `n` top
     files that match the query, ranked according to tf-idf.
     """
-
-    # Calculate the TF-IDFs for each word:
+    
+    # Calculate the TF-IDFs for each word by document:
     term_frequency_idfs = dict()
     for document in files:
         term_frequency_idfs[document] = {}
@@ -157,14 +155,14 @@ def top_sentences(query, sentences, idfs, n):
     the query, ranked according to idf. If there are ties, preference should
     be given to sentences that have a higher query term density.
     """
-
+    
     # Calculate the matching word measure and query term density for each sentence:
     top_sentences = []
     for sentence in sentences:
         matching_word_measure = 0
         query_term_density = 0
         for word in query:
-            if word in sentence:
+            if word in sentences[sentence]:
                 matching_word_measure += idfs[word]
                 query_term_density += 1
         top_sentences.append((sentence, matching_word_measure, query_term_density))
