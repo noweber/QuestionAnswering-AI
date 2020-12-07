@@ -1,3 +1,4 @@
+import math
 import nltk
 from nltk.corpus import stopwords
 import os
@@ -93,12 +94,26 @@ def compute_idfs(documents):
     Any word that appears in at least one of the documents should be in the
     resulting dictionary.
     """
-    print("compute_idfs(documents)")
-    print("documents length: ", len(documents))
-    # TODO: look at the lecture notes for how to calculate the idf function
-    # TODO: brian provides the code for this
-    # TODO: make sure to use base 'e lg for this
-    raise NotImplementedError
+
+    # Calculate the number of documents each word appears in:
+    document_frequencies = dict()
+    for document in documents:
+        # print("document: ", document)
+        document_words = set()
+        for word in documents[document]:
+            if word not in document_words:
+                document_words.add(word)
+        for word in document_words:
+            if word in document_frequencies:
+                document_frequencies[word] += 1
+            else:
+                document_frequencies[word] = 1
+
+    # Calculate the inverse document frequencies for each word:
+    total_documents = len(documents)
+    for key in document_frequencies:
+        document_frequencies[key] = math.log(total_documents / document_frequencies[key])
+    return document_frequencies
 
 
 def top_files(query, files, idfs, n):
