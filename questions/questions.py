@@ -52,15 +52,14 @@ def load_files(directory):
     Given a directory name, return a dictionary mapping the filename of each
     `.txt` file inside that directory to the file's contents as a string.
     """
-    files = dict()
 
     # Find each file within the given directory:
+    files = dict()
     for filename in os.listdir(directory):
         if '.txt' in filename:
             with open(os.path.join(directory, filename), encoding="utf8") as file:
                 file_text = file.read()
                 files[filename] = file_text
-    
     return files
 
 
@@ -80,7 +79,7 @@ def tokenize(document):
                 if word.isalpha()
             ]
 
-    # Remove the English stopwords
+    # Remove the English stopwords:
     # source: https://www.geeksforgeeks.org/removing-stop-words-nltk-python/
     stop_words = set(stopwords.words('english'))  
     words = [word for word in words if not word in stop_words]
@@ -124,6 +123,7 @@ def top_files(query, files, idfs, n):
     to their IDF values), return a list of the filenames of the the `n` top
     files that match the query, ranked according to tf-idf.
     """
+
     # Calculate the TF-IDFs for each word:
     term_frequency_idfs = dict()
     for document in files:
