@@ -140,7 +140,7 @@ def top_files(query, files, idfs, n):
         tf_idf_query_sums.append((document, sum_of_tf_idf_values_for_words_in_query))
 
     # Return the top 'n' documents based on the highest sum of TF-IDFs matching the query:
-    tf_idf_query_sums.sort(key=lambda x:x[1], reverse=True)
+    tf_idf_query_sums.sort(key=lambda x: x[1], reverse=True)
     top_files = tf_idf_query_sums[:n]
     for i in range(len(top_files)):
         top_files[i] = top_files[i][0]
@@ -168,14 +168,14 @@ def top_sentences(query, sentences, idfs, n):
         top_sentences.append((sentence, matching_word_measure, query_term_density))
     
     # Find the top sentences based on matching word measure:
-    top_sentences.sort(key=lambda x:x[1], reverse=True)
+    top_sentences.sort(key=lambda x: x[1], reverse=True)
     matching_word_measure_ties = []
     for i in range(len(top_sentences)):
         if top_sentences[i][1] == top_sentences[0][1]:
             matching_word_measure_ties.append(top_sentences[i])
-
+            
     # Sort matching word measure ties based on query term density:
-    matching_word_measure_ties.sort(key=lambda x:x[2], reverse=True)
+    matching_word_measure_ties.sort(key=lambda x: x[2], reverse=True)
 
     # Return the top 'n':
     top_sentences = matching_word_measure_ties[:n]
