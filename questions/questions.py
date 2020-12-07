@@ -188,6 +188,5 @@ def top_sentences(query, sentences, idfs, n):
     return top_sentences
 
 
-
 if __name__ == "__main__":
     main()
