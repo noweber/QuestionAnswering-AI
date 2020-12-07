@@ -161,7 +161,6 @@ def top_sentences(query, sentences, idfs, n):
 
     # Calculate the matching word measure and query term density for each sentence:
     top_sentences = []
-    # print("len(sentences): ", len(sentences))
     for sentence in sentences:
         matching_word_measure = 0
         query_term_density = 0
