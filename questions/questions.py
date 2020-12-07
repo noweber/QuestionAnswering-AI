@@ -98,7 +98,6 @@ def compute_idfs(documents):
     # Calculate the number of documents each word appears in:
     document_frequencies = dict()
     for document in documents:
-        # print("document: ", document)
         document_words = set()
         for word in documents[document]:
             if word not in document_words:
