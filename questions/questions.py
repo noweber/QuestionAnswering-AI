@@ -1,3 +1,4 @@
+from collections import Counter
 import math
 import nltk
 from nltk.corpus import stopwords
@@ -124,7 +125,40 @@ def top_files(query, files, idfs, n):
     files that match the query, ranked according to tf-idf.
     """
     # TODO: use python sort() which lets you pass words in.. this will make it more Pythonic .. else it will just be normal code
-    raise NotImplementedError
+    # print("len(files): ", len(files))
+    # print("files.keys(): ", files.keys())
+
+    # Calculate the TF-IDFs for each word:
+    term_frequency_idfs = dict()
+    for document in files:
+        term_frequency_idfs[document] = {}
+        word_count = Counter(files[document])
+        for word in word_count:
+            term_frequency = word_count[word]
+            # print("word: ", word)
+            # print("term_frequency: ", term_frequency)
+            term_frequency_idfs[document][word] = term_frequency * idfs[word]
+            # term_frequency_idfs[document].append((word, term_frequency * idfs[word]))
+
+        # print("term_frequency_idfs[document]: ", term_frequency_idfs[document])
+
+    tf_idf_query_sums = []
+    for document in files:
+        sum_of_tf_idf_values_for_words_in_query = 0
+        for word in query:
+            if word in term_frequency_idfs[document]:
+                sum_of_tf_idf_values_for_words_in_query += term_frequency_idfs[document][word]
+        tf_idf_query_sums.append((document, sum_of_tf_idf_values_for_words_in_query))
+    # print("tf_idf_query_sums: ", tf_idf_query_sums)
+    
+    tf_idf_query_sums.sort(key=lambda x:x[1], reverse=True)
+    # print("tf_idf_query_sums: ", tf_idf_query_sums)
+    top_files = tf_idf_query_sums[:n]
+    for i in range(len(top_files)):
+        top_files[i] = top_files[i][0]
+
+    # print("top_files: ", top_files)
+    return top_files
 
 
 def top_sentences(query, sentences, idfs, n):
